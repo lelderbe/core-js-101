@@ -27,8 +27,15 @@
  *  21 => 'Fizz'
  *
  */
-function getFizzBuzz(/* num */) {
-  throw new Error('Not implemented');
+function getFizzBuzz(num) {
+  let text = '';
+  if (num % 3 === 0) {
+    text += 'Fizz';
+  }
+  if (num % 5 === 0) {
+    text += 'Buzz';
+  }
+  return text || num;
 }
 
 
@@ -125,8 +132,8 @@ function isTriangle(a, b, c) {
  *   { top:20, left:20, width: 20, height: 20 }    =>  false
  *
  */
-function doRectanglesOverlap(/* rect1, rect2 */) {
-  throw new Error('Not implemented');
+function doRectanglesOverlap(rect1, rect2) {
+  return rect1.top + rect1.height > rect2.top && rect1.left + rect1.width > rect2.left;
 }
 
 
@@ -156,8 +163,9 @@ function doRectanglesOverlap(/* rect1, rect2 */) {
  *   { center: { x:0, y:0 }, radius:10 },  { x:10, y:10 }   => false
  *
  */
-function isInsideCircle(/* circle, point */) {
-  throw new Error('Not implemented');
+function isInsideCircle(circle, point) {
+  const distance = Math.sqrt((point.x - circle.center.x) ** 2 + (point.y - circle.center.y) ** 2);
+  return distance < circle.radius;
 }
 
 
@@ -382,8 +390,18 @@ function toNaryString(num, n) {
  *   ['/web/assets/style.css', '/.bin/mocha',  '/read.me'] => '/'
  *   ['/web/favicon.ico', '/web-scripts/dump', '/verbalizer/logs'] => '/'
  */
-function getCommonDirectoryPath(/* pathes */) {
-  throw new Error('Not implemented');
+function getCommonDirectoryPath(pathes) {
+  let common = '';
+  for (let i = 0; i < pathes[0].length; i += 1) {
+    const char = pathes[0][i];
+    const match = pathes.every((item) => item[i] === char);
+    if (!match) {
+      break;
+    }
+    common += char;
+  }
+
+  return common.slice(0, common.lastIndexOf('/') + 1);
 }
 
 
@@ -440,8 +458,41 @@ function getMatrixProduct(/* m1, m2 */) {
  *    [    ,   ,    ]]
  *
  */
-function evaluateTicTacToePosition(/* position */) {
-  throw new Error('Not implemented');
+function evaluateTicTacToePosition(position) {
+  function checkDiag(char) {
+    return (position[0][0] === char && position[1][1] === char && position[2][2] === char)
+    || (position[0][2] === char && position[1][1] === char && position[2][0] === char);
+  }
+
+  function checkColumns(char) {
+    for (let i = 0; i < 3; i += 1) {
+      if (position[0][i] === char && position[1][i] === char && position[2][i] === char) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  function checkRows(char) {
+    for (let i = 0; i < 3; i += 1) {
+      if (position[i][0] === char && position[i][1] === char && position[i][2] === char) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  function check(char) {
+    return checkRows(char) || checkColumns(char) || checkDiag(char);
+  }
+
+  if (check('X')) {
+    return 'X';
+  }
+  if (check('0')) {
+    return '0';
+  }
+  return undefined;
 }
 
 
